@@ -33,11 +33,11 @@ To import the complete Sonora Music Kit library just add `pod 'SonoraMusicKit'` 
     <td>MPMediaLibrary</td><td>✔</td><td>✘</td><td>✔</td>
   </tr>
   <tr>
-    <td>Spotify</td><td>✔</td><td>✔</td><td>✝</td>
+    <td>Spotify</td><td>✔</td><td>✔</td><td>✔</td>
   </tr>
 </table>
 
- ✝ Already implemented by the base SDK but needs to be merged into this fork. Since I don't use this content sources I'm not interessted in doing that now.
+ ✝ Already implemented by the base SDK but needs to get merged into this fork. Since I don't use this content sources I'm not interessted in doing that now.
 
 ### Players
 
@@ -55,11 +55,10 @@ To import the complete Sonora Music Kit library just add `pod 'SonoraMusicKit'` 
     <td>SFBAudioEngine</td><td>✔</td><td>✔</td><td>✝</td>
   </tr>
   <tr>
-    <td>Spotify SDK</td><td>✔</td><td>✔</td><td>✝</td>
-  </tr>
+    <td>Spotify SDK</td><td>✔</td><td>✔</td><td>✔</tr>
 </table>
 
-✝ Already implemented by the base SDK but needs to be merged into this fork. Since I don't use this players I'm not interessted in doing that now.
+✝ Already implemented by the base SDK but needs to get merged into this fork. Since I don't use this players I'm not interessted in doing that now.
 
 
 ## License
