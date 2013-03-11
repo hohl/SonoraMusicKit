@@ -1,4 +1,4 @@
-## Sonora Music Kit
+# Sonora Music Kit
 
 An all-in-one solution for building content rich music applications by supporting the most popular streaming and radio sources.
 
@@ -11,16 +11,16 @@ This framework will consist of the following components that will create an all-
 * **Players**: Different audio players sharing a common interface to handle a wide variety of content formats. 
 * **Other Services**: Objective-C interfaces to other commonly used services like Last.fm.
 
-### How To Get Started
+## How To Get Started
 
 It is highly recommended to use CocoaPods for dependency management. If you are new to CocoaPods [read their wiki to get started](https://github.com/CocoaPods/CocoaPods/wiki/Creating-a-project-that-uses-CocoaPods).
 
 To import the complete Sonora Music Kit library just add `pod 'SonoraMusicKit'` to your Podfile. If you just want to select single content sources of the project use it like `pod 'SonoraMusicKit/Spotify'` or `pod 'SonoraMusicKit/MPMediaLibrary'`.
 
 
-### Progress
+## Progress
 
-#### Content Sources
+### Content Sources
 
 <table>
   <tr>
@@ -39,7 +39,7 @@ To import the complete Sonora Music Kit library just add `pod 'SonoraMusicKit'` 
 
  ✝ Already implemented by the base SDK but needs to be merged into this fork. Since I don't use this content sources I'm not interessted in doing that now.
 
-#### Players
+### Players
 
 <table>
   <tr>
@@ -62,6 +62,6 @@ To import the complete Sonora Music Kit library just add `pod 'SonoraMusicKit'` 
 ✝ Already implemented by the base SDK but needs to be merged into this fork. Since I don't use this players I'm not interessted in doing that now.
 
 
-### License
+## License
 
 This SNRMusicKit project by [Indragie Karunaratne](https://github.com/indragiek) which is the base of this project is licensed under the [BSD License](http://opensource.org/licenses/bsd-license.php). All additions made by this fork are under the [MIT License](https://raw.github.com/hohl/SonoraMusicKit/master/LICENSE).
