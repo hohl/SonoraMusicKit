@@ -1,6 +1,6 @@
 //
-//  MPMediaLibrary.h
-//  MPMediaLibrary
+//  SMKMPMediaLibrary.h
+//  Sonora Music Kit
 //
 //  Created by Michael Hohl on 08.03.13.
 //  Copyright (c) 2013 Michael Hohl. All rights reserved.
