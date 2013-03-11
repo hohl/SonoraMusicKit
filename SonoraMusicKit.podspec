@@ -14,6 +14,11 @@ Pod::Spec.new do |s|
     mpmedialibrary.source_files = 'Classes/MPMediaLibrary/*.{h,m}'
     mpmedialibrary.frameworks   = 'MediaPlayer', 'AVFoundation'
   end
+  s.subspec 'Spotify' do |spotify|
+    spotify.platform     = :ios, '5.0'
+    spotify.source_files = 'Classes/Spotify/*.{h,m}'
+    spotify.dependency     'CocoaLibSpotify', '~> 2.4'
+  end
   s.subspec 'OtherServices' do |otherservices|
     otherservices.source_files = 'Classes/Other Services/*.{h,m}'
     otherservices.dependency     'AFNetworking', '~> 1.1'
