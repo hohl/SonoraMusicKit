@@ -6,15 +6,12 @@
 //  Copyright (c) 2012 Indragie Karunaratne. All rights reserved.
 //
 
-//#if TARGET_OS_IPHONE
-//#import "CocoaLibSpotify.h"
-//#else
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
-//#endif
 
 #import "SMKTrack.h"
+#import "SMKArtworkObject.h"
 #import "SMKWebObject.h"
 #import "SMKHierarchicalLoading.h"
 
-@interface SPTrack (SMKTrack) <SMKTrack, SMKWebObject, SMKHierarchicalLoading>
+@interface SPTrack (SMKTrack) <SMKTrack, SMKArtworkObject, SMKWebObject, SMKHierarchicalLoading>
 @end

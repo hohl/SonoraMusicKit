@@ -57,6 +57,13 @@
     return YES;
 }
 
+#pragma mark - SMKArtworkObject
+
+- (void)fetchArtworkWithSize:(SMKArtworkSize)size completionHandler:(void (^)(UIImage *, NSError *))handler
+{
+    return [self.album fetchArtworkWithSize:size completionHandler:handler];
+}
+
 #pragma mark - SMKWebObject
 
 - (NSURL *)webURL

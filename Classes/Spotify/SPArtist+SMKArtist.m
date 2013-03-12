@@ -15,10 +15,6 @@
 
 static void* const SMKSPArtistBrowseKey = @"SMK_SPArtistBrowse";
 
-@interface SPArtist (SMKInternal)
-@property (nonatomic, readwrite, strong) SPSession *session;
-@end
-
 @implementation SPArtist (SMKArtist)
 
 #pragma mark - SMKArtist
@@ -50,7 +46,7 @@ static void* const SMKSPArtistBrowseKey = @"SMK_SPArtistBrowse";
 
 - (id<SMKContentSource>)contentSource
 {
-    return (id<SMKContentSource>)self.session;
+    return [SMKSpotifyContentSource sharedInstance];
 }
 
 #pragma mark - SMKWebObject
@@ -92,7 +88,7 @@ static void* const SMKSPArtistBrowseKey = @"SMK_SPArtistBrowse";
 {
     __block SPArtistBrowse *browse = [self associatedValueForKey:SMKSPArtistBrowseKey];
     if (!browse) {
-        browse = [SPArtistBrowse browseArtist:self inSession:self.session type:SP_ARTISTBROWSE_NO_TRACKS];
+        browse = [SPArtistBrowse browseArtist:self inSession:self.contentSource type:SP_ARTISTBROWSE_NO_TRACKS];
         [self associateValue:browse withKey:SMKSPArtistBrowseKey];
     }
     return browse;

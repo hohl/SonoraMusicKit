@@ -13,6 +13,10 @@
 #import "NSMutableArray+SMKAdditions.h"
 #import "SPToplist+SMKPlaylist.h"
 
+@interface SMKSpotifyContentSource ()
+- (id)_initWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error;
+@end
+
 @implementation SMKSpotifyContentSource
 
 #pragma mark - SMKContentSource
@@ -74,12 +78,25 @@ static SMKSpotifyContentSource *_sharedContentSource = nil;
 + (BOOL)initializeSharedInstanceWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error
 {
     @synchronized([SMKSpotifyContentSource class]) {
-        _sharedContentSource = [[SMKSpotifyContentSource alloc] initWithApplicationKey:appKey userAgent:userAgent loadingPolicy:policy error:error];
+        _sharedContentSource = [[SMKSpotifyContentSource alloc] _initWithApplicationKey:appKey userAgent:userAgent loadingPolicy:policy error:error];
         
         if (!_sharedContentSource)
             return NO;
         return YES;
     }
+}
+
+- (id)initWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error
+{
+    // DO NOT INSTANTIATE THAT CLASS ANYWHERE ELSE INSTEAD USE THE SHARED INSTANCE!
+    // The initializeSharedInstanceWithApplicationKey:userAgent:loadingPolicy:error: method uses the same method just with an _ as prefix which is a private method.
+    return nil;
+}
+
+- (id)_initWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error
+{
+    self = [super initWithApplicationKey:appKey userAgent:userAgent loadingPolicy:policy error:error];
+    return self;
 }
 
 + (dispatch_queue_t)spotifyLocalQueue
