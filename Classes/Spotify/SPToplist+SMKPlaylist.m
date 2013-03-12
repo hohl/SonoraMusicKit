@@ -7,10 +7,10 @@
 //
 
 #import "SPToplist+SMKPlaylist.h"
+#import "SMKSpotifyContentSource.h"
 #import "NSObject+SMKSpotifyAdditions.h"
 #import "NSObject+AssociatedObjects.h"
 #import "SMKSpotifyHelpers.h"
-#import "SMKSpotifyContentSource.h"
 
 static void* const SMKSPToplistNameKey = "SMK_SPToplistName";
 
@@ -20,7 +20,7 @@ static void* const SMKSPToplistNameKey = "SMK_SPToplistName";
 
 - (void)fetchTracksWithCompletionHandler:(void(^)(NSArray *tracks, NSError *error))handler
 {
-    dispatch_queue_t queue = [(SMKSpotifyContentSource *)self.session spotifyLocalQueue];
+    dispatch_queue_t queue = [SMKSpotifyContentSource spotifyLocalQueue];
     [SMKSpotifyHelpers loadItemsAynchronously:self.tracks
                               sortDescriptors:nil
                                     predicate:nil

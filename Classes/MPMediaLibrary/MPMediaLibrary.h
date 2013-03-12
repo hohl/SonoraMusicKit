@@ -6,10 +6,12 @@
 //  Copyright (c) 2013 Michael Hohl. All rights reserved.
 //
 
+#import "SMKAVPlayerItem.h"
+#import "SMKAVQueuePlayer.h"
 #import "SMKMPMediaAlbum.h"
 #import "SMKMPMediaArtist.h"
-#import "SMKMediaContentSource.h"
-#import "SMKMediaHelpers.h"
-#import "SMKMediaPlaylist.h"
+#import "SMKMPMediaContentSource.h"
+#import "SMKMPMediaHelpers.h"
+#import "SMKMPMediaPlaylist.h"
 #import "SMKMPMediaPredicate.h"
-#import "SMKMediaTrack.h"
+#import "SMKMPMediaTrack.h"

@@ -74,4 +74,18 @@
         dispatch_group_leave(group);
     }];
 }
+
+#pragma mark - NSCoding
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    // ToDo: Implement a solution or remove NSCoding from SMKTrack
+    return nil;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    // ToDo: Implementation required!
+}
+
 @end

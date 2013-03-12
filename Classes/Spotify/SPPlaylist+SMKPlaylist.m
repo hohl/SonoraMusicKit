@@ -7,15 +7,14 @@
 //
 
 #import "SPPlaylist+SMKPlaylist.h"
+#import "SMKSpotifyContentSource.h"
 #import "SPUser+SMKUser.h"
 #import "SPAlbum+SMKAlbum.h"
 #import "SPArtist+SMKArtist.h"
 #import "NSObject+SMKSpotifyAdditions.h"
 #import "NSMutableArray+SMKAdditions.h"
 #import "SMKSpotifyHelpers.h"
-
 #import "SMKSpotifyConstants.h"
-#import "SMKSpotifyContentSource.h"
 
 
 @interface SPPlaylist (SMKInternal)
@@ -28,7 +27,7 @@
 
 - (void)fetchTracksWithCompletionHandler:(void(^)(NSArray *tracks, NSError *error))handler
 {
-    dispatch_queue_t queue = [(SMKSpotifyContentSource *)self.session spotifyLocalQueue];
+    dispatch_queue_t queue = [SMKSpotifyContentSource spotifyLocalQueue];
     [SMKSpotifyHelpers loadItemsAynchronously:self.items
                               sortDescriptors:nil
                                     predicate:nil

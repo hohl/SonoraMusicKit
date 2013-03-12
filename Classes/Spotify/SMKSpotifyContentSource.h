@@ -6,11 +6,7 @@
 //  Copyright (c) 2012 Indragie Karunaratne. All rights reserved.
 //
 
-//#if TARGET_OS_IPHONE
-//#import "CocoaLibSpotify.h"
-//#else
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
-//#endif
 
 #import "SMKContentSource.h"
 #import "SPUser+SMKUser.h"
@@ -21,6 +17,8 @@
 #import "SMKSpotifyPlayer.h"
 
 @interface SMKSpotifyContentSource : SPSession <SMKContentSource>
++ (SMKSpotifyContentSource *)sharedInstance;
++ (BOOL)initializeSharedInstanceWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error;
 /** This queue is used to sort and filter content before it's returned */
-@property (nonatomic, readonly) dispatch_queue_t spotifyLocalQueue;
++ (dispatch_queue_t)spotifyLocalQueue;
 @end

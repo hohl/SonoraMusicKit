@@ -7,11 +7,10 @@
 //
 
 #import "SPArtist+SMKArtist.h"
+#import "SMKSpotifyContentSource.h"
 #import "NSObject+AssociatedObjects.h"
 #import "NSObject+SMKSpotifyAdditions.h"
 #import "NSMutableArray+SMKAdditions.h"
-
-#import "SMKSpotifyContentSource.h"
 #import "SMKSpotifyHelpers.h"
 
 static void* const SMKSPArtistBrowseKey = @"SMK_SPArtistBrowse";
@@ -29,7 +28,7 @@ static void* const SMKSPArtistBrowseKey = @"SMK_SPArtistBrowse";
                      completionHandler:(void(^)(NSArray *albums, NSError *error))handler
 {
     SPArtistBrowse *browse = [self SMK_associatedArtistBrowse];
-    dispatch_queue_t queue = [(SMKSpotifyContentSource *)self.session spotifyLocalQueue];
+    dispatch_queue_t queue = [SMKSpotifyContentSource spotifyLocalQueue];
     [SMKSpotifyHelpers loadItemsAynchronously:@[browse]
                               sortDescriptors:sortDescriptors
                                     predicate:predicate
@@ -93,9 +92,7 @@ static void* const SMKSPArtistBrowseKey = @"SMK_SPArtistBrowse";
 {
     __block SPArtistBrowse *browse = [self associatedValueForKey:SMKSPArtistBrowseKey];
     if (!browse) {
-        [SPSession dispatchToLibSpotifyThread:^{
-            browse = [SPArtistBrowse browseArtist:self inSession:self.session type:SP_ARTISTBROWSE_NO_TRACKS];
-        } waitUntilDone:YES];
+        browse = [SPArtistBrowse browseArtist:self inSession:self.session type:SP_ARTISTBROWSE_NO_TRACKS];
         [self associateValue:browse withKey:SMKSPArtistBrowseKey];
     }
     return browse;

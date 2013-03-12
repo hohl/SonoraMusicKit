@@ -9,14 +9,12 @@
 #import "SMKSpotifyContentSource.h"
 #import "SMKSpotifyConstants.h"
 #import "SMKSpotifyPlayer.h"
-
 #import "NSObject+SMKSpotifyAdditions.h"
 #import "NSMutableArray+SMKAdditions.h"
 #import "SPToplist+SMKPlaylist.h"
 
-@implementation SMKSpotifyContentSource {
-    dispatch_queue_t _localQueue;
-}
+@implementation SMKSpotifyContentSource
+
 #pragma mark - SMKContentSource
 
 - (NSString *)name { return @"Spotify"; }
@@ -27,16 +25,14 @@
                                 predicate:(NSPredicate *)predicate
                         completionHandler:(void(^)(NSArray *playlists, NSError *error))handler
 {
-    __weak SMKSpotifyContentSource *weakSelf = self;
+    __weak SPSession *weakSelf = self;
     [self SMK_spotifyWaitAsyncThen:^{
-        SMKSpotifyContentSource *strongSelf = weakSelf;
-        dispatch_async(strongSelf.spotifyLocalQueue, ^{
+        SPSession *strongSelf = weakSelf;
+        dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
             __block SPToplist *globalToplist = nil;
             __block SPToplist *userToplist = nil;
-            [SPSession dispatchToLibSpotifyThread:^{
-                globalToplist = [SPToplist globalToplistInSession:strongSelf];
-                userToplist = [SPToplist toplistForCurrentUserInSession:strongSelf];
-            } waitUntilDone:YES];
+            globalToplist = [SPToplist globalToplistInSession:strongSelf];
+            userToplist = [SPToplist toplistForCurrentUserInSession:strongSelf];
             dispatch_group_t group = dispatch_group_create();
             dispatch_group_enter(group);
             [SPAsyncLoading waitUntilLoaded:@[strongSelf.starredPlaylist, strongSelf.inboxPlaylist, strongSelf.userPlaylists, globalToplist, userToplist] timeout:SMKSpotifyDefaultLoadingTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
@@ -45,7 +41,7 @@
                 }];
                 dispatch_group_leave(group);
             }];
-            dispatch_group_notify(group, strongSelf.spotifyLocalQueue, ^{
+            dispatch_group_notify(group, [SMKSpotifyContentSource spotifyLocalQueue], ^{
                 strongSelf.inboxPlaylist.name = @"Inbox";
                 strongSelf.starredPlaylist.name = @"Starred";
                 globalToplist.name = @"Global Toplist";
@@ -64,19 +60,36 @@
     }];
 }
 
-- (void)dealloc
-{
-    if (_localQueue)
-        dispatch_release(_localQueue);
-}
-
 #pragma mark - Accessors
 
-- (dispatch_queue_t)spotifyLocalQueue
+static SMKSpotifyContentSource *_sharedContentSource = nil;
+
++ (SMKSpotifyContentSource *)sharedInstance
 {
-    if (!_localQueue) {
-        _localQueue = dispatch_queue_create("com.indragie.SNRMusicKit.spotifyLocalQueue", DISPATCH_QUEUE_SERIAL);
+    @synchronized([SMKSpotifyContentSource class]) {
+        return _sharedContentSource;
     }
-    return _localQueue;
 }
+
++ (BOOL)initializeSharedInstanceWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error
+{
+    @synchronized([SMKSpotifyContentSource class]) {
+        _sharedContentSource = [[SMKSpotifyContentSource alloc] initWithApplicationKey:appKey userAgent:userAgent loadingPolicy:policy error:error];
+        
+        if (!_sharedContentSource)
+            return NO;
+        return YES;
+    }
+}
+
++ (dispatch_queue_t)spotifyLocalQueue
+{
+    static dispatch_queue_t localQueue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        localQueue = dispatch_queue_create("com.indragie.SNRMusicKit.spotifyLocalQueue", DISPATCH_QUEUE_SERIAL);
+    });
+    return localQueue;
+}
+
 @end

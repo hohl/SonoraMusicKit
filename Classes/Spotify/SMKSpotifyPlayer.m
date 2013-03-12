@@ -19,9 +19,15 @@
 
 @implementation SMKSpotifyPlayer
 
-- (id)initWithPlaybackSession:(SPSession *)aSession
+- (id)init
 {
-    if ((self = [super init])) {
+    return [self initWithPlaybackSession:[SMKSpotifyContentSource sharedInstance]];
+}
+
+- (id)initWithPlaybackSession:(SMKSpotifyContentSource *)aSession
+{
+    self = [super init];
+    if (self) {
         self.audioPlayer = [[SPPlaybackManager alloc] initWithPlaybackSession:aSession];
         self.seekTimeInterval = SMKPlayerDefaultSeekTimeInterval;
         self.volume = 1.0;
@@ -57,7 +63,7 @@
 
 + (NSSet *)supportedContentSourceClasses
 {
-    return [NSSet setWithObject:NSStringFromClass([SMKSpotifyContentSource class])];
+    return [NSSet setWithObject:NSStringFromClass([SPSession class])];
 }
 
 + (BOOL)supportsPreloading
@@ -73,6 +79,11 @@
 - (id<SMKTrack>)currentTrack
 {
     return [self.audioPlayer currentTrack];
+}
+
+- (BOOL)playing
+{
+    return self.audioPlayer.playbackSession.playing;
 }
 
 - (void)pause
@@ -102,6 +113,11 @@
     [self.audioPlayer seekToTrackPosition:newTime];
 }
 
+- (NSTimeInterval)playbackTime
+{
+    return self.audioPlayer.trackPosition;
+}
+
 - (void)playTrack:(id<SMKTrack>)track completionHandler:(void (^)(NSError *))handler
 {
     __weak SMKSpotifyPlayer *weakSelf = self;
@@ -128,7 +144,7 @@
 
 - (void)skipToPreloadedTrack
 {
-    if (self.preloadedTrack) 
+    if (self.preloadedTrack)
         [self playTrack:self.preloadedTrack completionHandler:nil];
 }
 

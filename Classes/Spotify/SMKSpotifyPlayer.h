@@ -6,13 +6,9 @@
 //  Copyright (c) 2012 Indragie Karunaratne. All rights reserved.
 //
 
-//#if TARGET_OS_IPHONE
-//#import "CocoaLibSpotify.h"
-//#else
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
-//#endif
-
 #import "SMKPlayer.h"
+@class SMKSpotifyContentSource;
 
 @interface SMKSpotifyPlayer : NSObject <SMKPlayer>
 
@@ -26,7 +22,7 @@
 @property (nonatomic, assign) float volume;
 @property (nonatomic, strong, readonly) id<SMKTrack> currentTrack;
 
-- (id)initWithPlaybackSession:(SPSession *)aSession;
+- (id)initWithPlaybackSession:(SMKSpotifyContentSource *)aSession;
 
 // Preloading (SMKPlayer @optional)
 @property (nonatomic, strong, readonly) id<SMKTrack> preloadedTrack;
