@@ -264,7 +264,8 @@ SMKChartType SMKChartTopTracks = @"chart.getTopTracks";
 
 - (void)_storeCredentialsWithUsername:(NSString*)username sessionKey:(NSString*)key error:(NSError**)error
 {
-    if ([SSKeychain setPassword:key forService:SMKLastFMServiceName account:username error:error])
+    if ([SSKeychain setPassword:key forService:SMKLastFMServiceName account:username]) {
         _username = username;
+    }
 }
 @end
