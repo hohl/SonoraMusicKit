@@ -12,6 +12,8 @@
 #import "NSObject+SMKSpotifyAdditions.h"
 #import "NSMutableArray+SMKAdditions.h"
 #import "SPToplist+SMKPlaylist.h"
+#import "SMKSection.h"
+#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 @interface SMKSpotifyContentSource ()
 - (id)_initWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error;
@@ -23,7 +25,9 @@
 
 - (NSString *)name { return @"Spotify"; }
 
-+ (Class)predicateClass { return [NSPredicate class]; }
+- (NSString *)displayName { return @"Spotify"; }
+
++ (Class)predicateClass { return [NSString class]; }
 
 - (void)fetchPlaylistsWithSortDescriptors:(NSArray *)sortDescriptors
                                 predicate:(NSPredicate *)predicate
@@ -60,6 +64,66 @@
                 });
             });
             dispatch_release(group);
+        });
+    }];
+}
+
+- (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
+{
+    if (predicate && ![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
+        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchTracksWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
+        return;
+    }
+    
+    __weak SPSession *weakSelf = self;
+    [self SMK_spotifyWaitAsyncThen:^{
+        SPSession *strongSelf = weakSelf;
+        dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
+            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
+                handler(search.tracks, nil, nil);
+                [search removeAllObservers];
+            }];
+        });
+    }];
+}
+
+- (void)fetchAlbumsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
+{
+    if (predicate && ![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
+        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchAlbumsWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
+        return;
+    }
+    
+    __weak SPSession *weakSelf = self;
+    [self SMK_spotifyWaitAsyncThen:^{
+        SPSession *strongSelf = weakSelf;
+        dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
+            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
+                handler(search.albums, nil, nil);
+                [search removeAllObservers];
+            }];
+        });
+    }];
+}
+
+- (void)fetchArtistsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
+{
+    if (predicate && ![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
+        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchArtistsWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
+        return;
+    }
+    
+    __weak SPSession *weakSelf = self;
+    [self SMK_spotifyWaitAsyncThen:^{
+        SPSession *strongSelf = weakSelf;
+        dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
+            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
+                handler(search.artists, nil, nil);
+                [search removeAllObservers];
+            }];
         });
     }];
 }

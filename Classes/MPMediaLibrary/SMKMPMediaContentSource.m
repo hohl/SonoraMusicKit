@@ -88,6 +88,8 @@
     });
 }
 
+- (NSString *)displayName { return @"iTunes"; }
+
 + (Class)predicateClass { return [SMKMPMediaPredicate class]; }
 
 

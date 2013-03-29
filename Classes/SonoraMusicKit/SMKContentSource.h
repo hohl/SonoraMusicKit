@@ -22,6 +22,11 @@
                         completionHandler:(void(^)(NSArray *playlists, NSError *error))handler;
 
 /**
+ Easy to read display name. Like 'Spotify' for SMKSpotifyContentSource. This name may be used for displaying to the user.
+ */
+- (NSString *)displayName;
+
+/**
  @return The class of the predicate used to sort objects from this content source
  */
 + (Class)predicateClass;
