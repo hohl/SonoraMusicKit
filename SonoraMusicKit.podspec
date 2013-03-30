@@ -18,7 +18,6 @@ Pod::Spec.new do |s|
     spotify.platform     = :ios, '5.0'
     spotify.source_files = 'Classes/Spotify/*.{h,m}'
     spotify.dependency     'CocoaLibSpotify', '~> 2.4'
-    spotify.dependency     'MAKVONotificationCenter', '0.0.2'
   end
   s.subspec 'OtherServices' do |otherservices|
     otherservices.source_files = 'Classes/Other Services/*.{h,m}'

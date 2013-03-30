@@ -13,7 +13,6 @@
 #import "NSMutableArray+SMKAdditions.h"
 #import "SPToplist+SMKPlaylist.h"
 #import "SMKSection.h"
-#import <MAKVONotificationCenter/MAKVONotificationCenter.h>
 
 @interface SMKSpotifyContentSource ()
 - (id)_initWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error;
@@ -170,7 +169,7 @@ static SMKSpotifyContentSource *_sharedContentSource = nil;
 
 - (id)initWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error
 {
-    // DO NOT INSTANTIATE THAT CLASS ANYWHERE ELSE INSTEAD USE THE SHARED INSTANCE!
+    NSLog(@"DO NOT INSTANTIATE 'SMKSpotifyContentSource' CLASS ANYWHERE ELSE INSTEAD USE THE SHARED INSTANCE!");
     // The initializeSharedInstanceWithApplicationKey:userAgent:loadingPolicy:error: method uses the same method just with an _ as prefix which is a private method.
     return nil;
 }
