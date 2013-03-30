@@ -82,19 +82,14 @@
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
-            __block SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
-            [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
-                handler(search.tracks, nil, nil);
-                [search removeAllObservers];
-            }];
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SMKSpotifyDefaultLoadingTimeout * NSEC_PER_SEC));
-            dispatch_after(popTime, [SMKSpotifyContentSource spotifyLocalQueue], ^{
-                if (search) {
+            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            [SPAsyncLoading waitUntilLoaded:search timeout:SMKSpotifyDefaultLoadingTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+                if ([loadedItems containsObject:search]) {
+                    handler(search.tracks, nil, nil);
+                } else {
                     handler(nil, nil, SMKSpotifyLoadingTimeoutError());
-                    [search removeAllObservers];
-                    search = nil;
                 }
-            });
+            }];
         });
     }];
 }
@@ -114,19 +109,13 @@
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
             __block SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
-            [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
-                handler(search.albums, nil, nil);
-                [search removeAllObservers];
-                search = nil;
-            }];
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SMKSpotifyDefaultLoadingTimeout * NSEC_PER_SEC));
-            dispatch_after(popTime, [SMKSpotifyContentSource spotifyLocalQueue], ^{
-                if (search) {
+            [SPAsyncLoading waitUntilLoaded:search timeout:SMKSpotifyDefaultLoadingTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+                if ([loadedItems containsObject:search]) {
+                    handler(search.albums, nil, nil);
+                } else {
                     handler(nil, nil, SMKSpotifyLoadingTimeoutError());
-                    [search removeAllObservers];
-                    search = nil;
                 }
-            });
+            }];
         });
     }];
 }
@@ -145,20 +134,14 @@
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
-            __block SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
-            [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
-                handler(search.artists, nil, nil);
-                [search removeAllObservers];
-                search = nil;
-            }];
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SMKSpotifyDefaultLoadingTimeout * NSEC_PER_SEC));
-            dispatch_after(popTime, [SMKSpotifyContentSource spotifyLocalQueue], ^{
-                if (search) {
+            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            [SPAsyncLoading waitUntilLoaded:search timeout:SMKSpotifyDefaultLoadingTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+                if ([loadedItems containsObject:search]) {
+                    handler(search.artists, nil, nil);
+                } else {
                     handler(nil, nil, SMKSpotifyLoadingTimeoutError());
-                    [search removeAllObservers];
-                    search = nil;
                 }
-            });
+            }];
         });
     }];
 }
