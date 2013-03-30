@@ -24,12 +24,17 @@ static void* const SMKSPArtistBrowseKey = @"SMK_SPArtistBrowse";
                      completionHandler:(void(^)(NSArray *albums, NSError *error))handler
 {
     SPArtistBrowse *browse = [self SMK_associatedArtistBrowse];
-    dispatch_queue_t queue = [SMKSpotifyContentSource spotifyLocalQueue];
-    [SMKSpotifyHelpers loadItemsAynchronously:@[browse]
-                              sortDescriptors:sortDescriptors
-                                    predicate:predicate
-                                 sortingQueue:queue
-                            completionHandler:handler];
+    SPDispatchAsync(^{
+        [SPAsyncLoading waitUntilLoaded:browse timeout:SMKSpotifyDefaultLoadingTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
+            if ([loadedItems count] == 0) {
+                handler(nil, SMKSpotifyLoadingTimeoutError());
+            } else if (predicate) {
+                handler([browse.albums filteredArrayUsingPredicate:predicate], nil);
+            } else {
+                handler(browse.albums, nil);
+            }
+        }];
+    });
 }
 
 #pragma mark - SMKContentObject
