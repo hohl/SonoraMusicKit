@@ -8,4 +8,14 @@
 
 #import "SMKSpotifyConstants.h"
 
-NSTimeInterval const SMKSpotifyDefaultLoadingTimeout = 20.0;
+NSString const *SMKSpotifyErrorDomain = @"com.indragie.SNRMusicKit.Spotify";
+NSInteger const SMKSpotifyLoadingTimeoutErrorCode = 1;
+
+NSTimeInterval const SMKSpotifyDefaultLoadingTimeout = 10.0;
+
+NSError *SMKSpotifyLoadingTimeoutError(void)
+{
+    return [NSError errorWithDomain:(NSString *)SMKSpotifyErrorDomain
+                               code:SMKSpotifyLoadingTimeoutErrorCode
+                           userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Spotify took too long to respond.", @"NSError description for loading timeout")}];
+}

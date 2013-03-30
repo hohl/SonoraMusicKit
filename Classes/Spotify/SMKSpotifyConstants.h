@@ -8,4 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString const *SMKSpotifyErrorDomain;
+
 extern NSTimeInterval const SMKSpotifyDefaultLoadingTimeout;
+extern NSInteger const SMKSpotifyLoadingTimeoutErrorCode;
+NSError *SMKSpotifyLoadingTimeoutError(void);

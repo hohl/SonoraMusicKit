@@ -70,7 +70,10 @@
 
 - (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
-    if (predicate && ![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
+    if (!predicate) {
+        return handler(nil, nil, nil);
+    }
+    if (![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
         [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchTracksWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
         return;
     }
@@ -79,18 +82,29 @@
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
-            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            __block SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
             [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
                 handler(search.tracks, nil, nil);
                 [search removeAllObservers];
             }];
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SMKSpotifyDefaultLoadingTimeout * NSEC_PER_SEC));
+            dispatch_after(popTime, [SMKSpotifyContentSource spotifyLocalQueue], ^{
+                if (search) {
+                    handler(nil, nil, SMKSpotifyLoadingTimeoutError());
+                    [search removeAllObservers];
+                    search = nil;
+                }
+            });
         });
     }];
 }
 
 - (void)fetchAlbumsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
-    if (predicate && ![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
+    if (!predicate) {
+        return handler(nil, nil, nil);
+    }
+    if (![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
         [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchAlbumsWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
         return;
     }
@@ -99,18 +113,30 @@
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
-            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            __block SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
             [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
                 handler(search.albums, nil, nil);
                 [search removeAllObservers];
+                search = nil;
             }];
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SMKSpotifyDefaultLoadingTimeout * NSEC_PER_SEC));
+            dispatch_after(popTime, [SMKSpotifyContentSource spotifyLocalQueue], ^{
+                if (search) {
+                    handler(nil, nil, SMKSpotifyLoadingTimeoutError());
+                    [search removeAllObservers];
+                    search = nil;
+                }
+            });
         });
     }];
 }
 
 - (void)fetchArtistsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
-    if (predicate && ![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
+    if (!predicate) {
+        return handler(nil, nil, nil);
+    }
+    if (![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
         [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchArtistsWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
         return;
     }
@@ -119,11 +145,20 @@
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
-            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            __block SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
             [search addObservationKeyPath:@"loaded" options:0 block:^(MAKVONotification *notification) {
                 handler(search.artists, nil, nil);
                 [search removeAllObservers];
+                search = nil;
             }];
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SMKSpotifyDefaultLoadingTimeout * NSEC_PER_SEC));
+            dispatch_after(popTime, [SMKSpotifyContentSource spotifyLocalQueue], ^{
+                if (search) {
+                    handler(nil, nil, SMKSpotifyLoadingTimeoutError());
+                    [search removeAllObservers];
+                    search = nil;
+                }
+            });
         });
     }];
 }
