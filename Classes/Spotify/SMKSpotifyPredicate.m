@@ -18,9 +18,10 @@ NSString *const SMKSpotifyPredicatePropertyName = @"name";
     if (self) {
         self.properties = properties;
     }
+    return self;
 }
 
-+ (SMKSpotifyPredicate *)predicateWithDictionary:(NSDictionary *)properties
++ (instancetype)predicateWithDictionary:(NSDictionary *)properties
 {
     return [[SMKSpotifyPredicate alloc] initWithDictionary:properties];
 }

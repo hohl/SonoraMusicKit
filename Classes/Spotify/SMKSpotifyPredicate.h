@@ -17,5 +17,5 @@ extern NSString *const SMKSpotifyPredicatePropertyName;
 @interface SMKSpotifyPredicate : NSObject
 @property (strong) NSDictionary *properties;
 - (id)initWithDictionary:(NSDictionary *)properties;
-+ (SMKSpotifyPredicate *)predicateWithDictionary:(NSDictionary *)properties;
++ (instancetype)predicateWithDictionary:(NSDictionary *)properties;
 @end
