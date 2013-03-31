@@ -13,6 +13,7 @@
 #import "NSMutableArray+SMKAdditions.h"
 #import "SPToplist+SMKPlaylist.h"
 #import "SMKSection.h"
+#import "SMKSpotifyPredicate.h"
 
 @interface SMKSpotifyContentSource ()
 - (id)_initWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error;
@@ -26,7 +27,7 @@
 
 - (NSString *)displayName { return @"Spotify"; }
 
-+ (Class)predicateClass { return [NSString class]; }
++ (Class)predicateClass { return [SMKSpotifyPredicate class]; }
 
 - (void)fetchPlaylistsWithSortDescriptors:(NSArray *)sortDescriptors
                                 predicate:(NSPredicate *)predicate
@@ -67,13 +68,13 @@
     }];
 }
 
-- (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
+- (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors predicate:(SMKSpotifyPredicate *)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
     if (!predicate) {
         return handler(nil, nil, nil);
     }
-    if (![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
-        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchTracksWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
+    if (![predicate isKindOfClass:[SMKSpotifyPredicate class]]) {
+        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchTracksWithSortDescriptors:predicate:completionHandler:] expects a SMKSpotifyPredicate as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
         return;
     }
     
@@ -81,7 +82,7 @@
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
-            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:[predicate.properties objectForKey:SMKSpotifyPredicatePropertyName] inSession:strongSelf];
             [SPAsyncLoading waitUntilLoaded:search timeout:SMKSpotifyDefaultLoadingTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
                 if ([loadedItems containsObject:search]) {
                     handler(search.tracks, nil, nil);
@@ -93,13 +94,13 @@
     }];
 }
 
-- (void)fetchAlbumsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
+- (void)fetchAlbumsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(SMKSpotifyPredicate *)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
     if (!predicate) {
         return handler(nil, nil, nil);
     }
-    if (![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
-        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchAlbumsWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
+    if (![predicate isKindOfClass:[SMKSpotifyPredicate class]]) {
+        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchAlbumsWithSortDescriptors:predicate:completionHandler:] expects a SMKSpotifyPredicate as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
         return;
     }
     
@@ -107,7 +108,7 @@
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
-            __block SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            __block SPSearch *search = [[SPSearch alloc] initWithSearchQuery:[predicate.properties objectForKey:SMKSpotifyPredicatePropertyName] inSession:strongSelf];
             [SPAsyncLoading waitUntilLoaded:search timeout:SMKSpotifyDefaultLoadingTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
                 if ([loadedItems containsObject:search]) {
                     handler(search.albums, nil, nil);
@@ -119,13 +120,13 @@
     }];
 }
 
-- (void)fetchArtistsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(id)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
+- (void)fetchArtistsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(SMKSpotifyPredicate *)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
     if (!predicate) {
         return handler(nil, nil, nil);
     }
-    if (![predicate isKindOfClass:[SMKSpotifyContentSource predicateClass]]) {
-        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchArtistsWithSortDescriptors:predicate:completionHandler:] expects a NSString as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
+    if (![predicate isKindOfClass:[SMKSpotifyPredicate class]]) {
+        [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"[SMKSpotifyContentSource fetchArtistsWithSortDescriptors:predicate:completionHandler:] expects a SMKSpotifyPredicate as predicate! Instead a %@ got passed as argument.", [predicate class]] userInfo:nil];
         return;
     }
     
@@ -133,7 +134,7 @@
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
         dispatch_async([SMKSpotifyContentSource spotifyLocalQueue], ^{
-            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:predicate inSession:strongSelf];
+            SPSearch *search = [[SPSearch alloc] initWithSearchQuery:[predicate.properties objectForKey:SMKSpotifyPredicatePropertyName] inSession:strongSelf];
             [SPAsyncLoading waitUntilLoaded:search timeout:SMKSpotifyDefaultLoadingTimeout then:^(NSArray *loadedItems, NSArray *notLoadedItems) {
                 if ([loadedItems containsObject:search]) {
                     handler(search.artists, nil, nil);

@@ -17,5 +17,6 @@
 #import "SMKPlayer.h"
 #import "SMKPlaylist.h"
 #import "SMKTrack.h"
+#import "SMKSection.h"
 #import "SMKUser.h"
 #import "SMKWebObject.h"

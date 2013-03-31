@@ -92,7 +92,6 @@
 
 + (Class)predicateClass { return [SMKMPMediaPredicate class]; }
 
-
 - (void)fetchArtistsWithSortDescriptors:(NSArray *)sortDescriptors
                               predicate:(SMKMPMediaPredicate *)predicate
                       completionHandler:(void(^)(NSArray *artists, NSArray *sections, NSError *error))handler
