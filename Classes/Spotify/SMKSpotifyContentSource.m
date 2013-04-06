@@ -33,6 +33,10 @@
                                 predicate:(NSPredicate *)predicate
                         completionHandler:(void(^)(NSArray *playlists, NSError *error))handler
 {
+    if (!self.user) {
+        return handler(nil, SMKSpotifyNotLoggedInError());
+    }
+    
     __weak SPSession *weakSelf = self;
     [self SMK_spotifyWaitAsyncThen:^{
         SPSession *strongSelf = weakSelf;
@@ -70,6 +74,9 @@
 
 - (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors predicate:(SMKSpotifyPredicate *)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
+    if (!self.user) {
+        return handler(nil, nil, SMKSpotifyNotLoggedInError());
+    }
     if (!predicate) {
         return handler(nil, nil, nil);
     }
@@ -96,6 +103,9 @@
 
 - (void)fetchAlbumsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(SMKSpotifyPredicate *)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
+    if (!self.user) {
+        return handler(nil, nil, SMKSpotifyNotLoggedInError());
+    }
     if (!predicate) {
         return handler(nil, nil, nil);
     }
@@ -122,6 +132,9 @@
 
 - (void)fetchArtistsWithSortDescriptors:(NSArray *)sortDescriptors predicate:(SMKSpotifyPredicate *)predicate completionHandler:(void (^)(NSArray *, NSArray *, NSError *))handler
 {
+    if (!self.user) {
+        return handler(nil, nil, SMKSpotifyNotLoggedInError());
+    }
     if (!predicate) {
         return handler(nil, nil, nil);
     }

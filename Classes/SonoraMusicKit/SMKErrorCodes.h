@@ -12,7 +12,7 @@ extern NSInteger const SMKPlayerErrorFailedToEnqueueTrack;
 extern NSInteger const SMKPlayerErrorItemAlreadyExists;
 extern NSInteger const SMKPlayerErrorFailedPlayItem;
 
-extern NSInteger const SMKCoreDataErrorDataStoreNotAFolder;
-extern NSInteger const SMKCoreDataErrorFailedToInitializeStore;
+extern NSInteger const SMKContentSourceErrorLoginRequired;
+extern NSInteger const SMKContentSourceErrorTimeout;
 
 extern NSInteger const SMKQueuePlayerErrorOutOfIndex;

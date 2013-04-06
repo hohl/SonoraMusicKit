@@ -12,9 +12,9 @@ NSInteger const SMKPlayerErrorFailedToCreateInputSource     = 0;
 NSInteger const SMKPlayerErrorFailedToCreateDecoder         = 1;
 NSInteger const SMKPlayerErrorItemAlreadyExists             = 2;
 NSInteger const SMKPlayerErrorFailedToEnqueueTrack          = 3;
-NSInteger const SMKPlayerErrorFailedPlayItem                = 7;
+NSInteger const SMKPlayerErrorFailedPlayItem                = 4;
 
-NSInteger const SMKCoreDataErrorDataStoreNotAFolder         = 4;
-NSInteger const SMKCoreDataErrorFailedToInitializeStore     = 5;
+NSInteger const SMKContentSourceErrorLoginRequired          = 5;
+NSInteger const SMKContentSourceErrorTimeout                = 6;
 
-NSInteger const SMKQueuePlayerErrorOutOfIndex               = 6;
+NSInteger const SMKQueuePlayerErrorOutOfIndex               = 7;

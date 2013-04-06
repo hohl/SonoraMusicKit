@@ -8,11 +8,11 @@
 
 #import "NSError+SMKAdditions.h"
 
-static NSString* const SMKDefaultErrorDomain = @"SMKErrorDomain";
+static NSString* const SMKDefaultErrorDomain = @"com.indragie.SNRMusicKit";
 
 @implementation NSError (SMKAdditions)
 + (NSError *)SMK_errorWithCode:(NSInteger)code description:(NSString *)description
 {
-    return [NSError errorWithDomain:SMKDefaultErrorDomain code:code userInfo:@{description : NSLocalizedDescriptionKey}];
+    return [NSError errorWithDomain:SMKDefaultErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey : description}];
 }
 @end
