@@ -11,6 +11,16 @@
 @protocol SMKContentSource <NSObject>
 @required
 /**
+ Easy to read display name. Like 'Spotify' for SMKSpotifyContentSource. This name may be used for displaying to the user.
+ */
+- (NSString *)displayName;
+
+/**
+ @return The class of the predicate used to sort objects from this content source
+ */
++ (Class)predicateClass;
+
+/**
  This method will fetch the playlists asynchronously and call the completion handler when finished.
  @param sortDescriptors Array of NSSortDescriptor objects used to sort the content
  @param predicate A predicate to filter the results with. Use SMKContentSource +predicateClass to find out which
@@ -21,17 +31,6 @@
                                 predicate:(id)predicate
                         completionHandler:(void(^)(NSArray *playlists, NSError *error))handler;
 
-/**
- Easy to read display name. Like 'Spotify' for SMKSpotifyContentSource. This name may be used for displaying to the user.
- */
-- (NSString *)displayName;
-
-/**
- @return The class of the predicate used to sort objects from this content source
- */
-+ (Class)predicateClass;
-
-@optional
 /**
  This method will fetch the artists asynchronously and call the completion handler when finished.
  @param sortDescriptors Array of NSSortDescriptor objects used to sort the content
