@@ -14,6 +14,9 @@
 /** Delegate to react on login and logout events. */
 @property (weak) id<SMKAuthenticationControllerDelegate> delegate;
 
+/** Content source which is the authentication controller for. */
+@property (weak) id<SMKContentSource> contentSource;
+
 /** @return YES if the user is authenticated. */
 - (BOOL)isAuthenticated;
 

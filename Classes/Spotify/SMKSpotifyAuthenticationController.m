@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Michael Hohl. All rights reserved.
 //
 
+#import "SMKSpotifyAuthenticationController.h"
 #import "Spotify.h"
 #import "NSError+SMKAdditions.h"
 #import <CocoaLibSpotify/CocoaLibSpotify.h>
@@ -15,11 +16,12 @@
 @end
 
 @implementation SMKSpotifyAuthenticationController {
-    __weak SPSession<SMKContentSource> *_session;
+    __weak SPSession<SMKContentSource> *_contentSource;
     NSDictionary *_credentials;
 }
 
 @synthesize delegate = _delegate;
+@synthesize contentSource = _contentSource;
 
 - (void)authenticateWithCredentials:(NSDictionary *)credentials completionHandler:(void (^)(NSError *))handler
 {
@@ -32,7 +34,7 @@
     }
     
     _credentials = credentials;
-    [_session attemptLoginWithUserName:userName existingCredential:credential];
+    [_contentSource attemptLoginWithUserName:userName existingCredential:credential];
 }
 
 #if TARGET_OS_PHONE || TARGET_IPHONE_SIMULATOR
@@ -43,24 +45,19 @@
 }
 #endif
 
-- (instancetype)_initWithSession:(SPSession<SMKContentSource> *)session
+- (instancetype)_initWithSession:(SPSession<SMKContentSource> *)contentSource
 {
     self = [super init];
     if (self) {
-        _session = session;
-        session.delegate = self;
+        _contentSource = contentSource;
+        contentSource.delegate = self;
     }
     return self;
 }
 
-- (SPSession<SMKContentSource> *)session
-{
-    return _session;
-}
-
 - (BOOL)isAuthenticated
 {
-    return _session.user != nil;
+    return _contentSource.user != nil;
 }
 
 #pragma mark - SPSessionDelegate

@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Michael Hohl. All rights reserved.
 //
 
-#import "SMKSpotifyAuthenticationController.h"
 #import "SMKSpotifyContentSource.h"
 #import "SMKSpotifyHelpers.h"
 #import "SMKSpotifyPlayer.h"

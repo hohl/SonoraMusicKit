@@ -7,15 +7,11 @@
 //
 
 #import "SonoraMusicKit.h"
-@class SPSession;
-@protocol SPSessionDelegate;
+#import <CocoaLibSpotify/SPSession.h>
 
 @interface SMKSpotifyAuthenticationController : NSObject<SMKAuthenticationController, SPSessionDelegate>
 
 /** @return YES if the user is authenticated. */
 @property (readonly, getter=isAuthenticated) BOOL authenticated;
-
-/** @return The SPSession */
-- (SPSession<SMKContentSource> *)session;
 
 @end

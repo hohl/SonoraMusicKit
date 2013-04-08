@@ -7,6 +7,7 @@
 //
 
 #import "Spotify.h"
+#import "SMKSpotifyAuthenticationController.h"
 #import "NSObject+SMKSpotifyAdditions.h"
 #import "NSMutableArray+SMKAdditions.h"
 
