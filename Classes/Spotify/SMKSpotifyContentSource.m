@@ -6,20 +6,21 @@
 //  Copyright (c) 2012 Indragie Karunaratne. All rights reserved.
 //
 
-#import "SMKSpotifyContentSource.h"
-#import "SMKSpotifyConstants.h"
-#import "SMKSpotifyPlayer.h"
+#import "Spotify.h"
 #import "NSObject+SMKSpotifyAdditions.h"
 #import "NSMutableArray+SMKAdditions.h"
-#import "SPToplist+SMKPlaylist.h"
-#import "SMKSection.h"
-#import "SMKSpotifyPredicate.h"
+
+@interface SMKSpotifyAuthenticationController ()
+- (instancetype)_initWithSession:(SPSession<SMKContentSource> *)session;
+@end
 
 @interface SMKSpotifyContentSource ()
 - (id)_initWithApplicationKey:(NSData *)appKey userAgent:(NSString *)userAgent loadingPolicy:(SPAsyncLoadingPolicy)policy error:(NSError *__autoreleasing *)error;
 @end
 
-@implementation SMKSpotifyContentSource
+@implementation SMKSpotifyContentSource {
+    SMKSpotifyAuthenticationController *_authenticationController;
+}
 
 #pragma mark - SMKContentSource
 
@@ -157,6 +158,14 @@
             }];
         });
     }];
+}
+
+- (id<SMKAuthenticationController>)authenticationController
+{
+    if (!_authenticationController) {
+        _authenticationController = [[SMKSpotifyAuthenticationController alloc] _initWithSession:self];
+    }
+    return _authenticationController;
 }
 
 #pragma mark - Accessors
