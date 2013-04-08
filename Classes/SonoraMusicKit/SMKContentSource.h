@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@protocol SMKAuthenticationController;
 
 @protocol SMKContentSource <NSObject>
 @required
@@ -63,5 +64,11 @@
 - (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors
                              predicate:(id)predicate
                      completionHandler:(void(^)(NSArray *tracks, NSArray *sections, NSError *error))handler;
+
+@optional
+/**
+ @return Controller used for authentication.
+ */
+- (id<SMKAuthenticationController>)authenticationController;
 
 @end

@@ -6,17 +6,18 @@
 //  Copyright (c) 2013 Michael Hohl. All rights reserved.
 //
 
-#import "SMKConvenience.h"
-#import "SMKErrorCodes.h"
-#import "SMKPlatformImports.h"
-#import "SMKQueueController.h"
 #import "SMKAlbum.h"
 #import "SMKArtist.h"
 #import "SMKArtworkObject.h"
+#import "SMKAuthenticationController.h"
+#import "SMKConvenience.h"
+#import "SMKErrorCodes.h"
 #import "SMKHierarchicalLoading.h"
+#import "SMKPlatformImports.h"
 #import "SMKPlayer.h"
 #import "SMKPlaylist.h"
-#import "SMKTrack.h"
+#import "SMKQueueController.h"
 #import "SMKSection.h"
+#import "SMKTrack.h"
 #import "SMKUser.h"
 #import "SMKWebObject.h"
