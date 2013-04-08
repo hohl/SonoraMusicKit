@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SMKContentSource.h"
 
 extern NSTimeInterval const SMKSpotifyDefaultLoadingTimeout;
 NSError *SMKSpotifyLoadingTimeoutError(void);

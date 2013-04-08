@@ -8,6 +8,7 @@
 
 #import "SMKSpotifyConstants.h"
 #import "SMKErrorCodes.h"
+#import "Spotify.h"
 #import "NSError+SMKAdditions.h"
 
 NSTimeInterval const SMKSpotifyDefaultLoadingTimeout = 10.0;
@@ -15,11 +16,13 @@ NSTimeInterval const SMKSpotifyDefaultLoadingTimeout = 10.0;
 NSError *SMKSpotifyLoadingTimeoutError(void)
 {
     return [NSError SMK_errorWithCode:SMKContentSourceErrorTimeout
-                          description:NSLocalizedString(@"Spotify took too long to respond.", @"NSError description for loading timeout")];
+                          description:NSLocalizedString(@"Spotify took too long to respond.", @"NSError description for loading timeout")
+                        contentSource:[SMKSpotifyContentSource sharedInstance]];
 }
 
 NSError *SMKSpotifyNotLoggedInError(void)
 {
     return [NSError SMK_errorWithCode:SMKContentSourceErrorLoginRequired
-                          description:NSLocalizedString(@"To use Spotify you need to login with a Premium account!", @"NSError description for loading timeout")];
+                          description:NSLocalizedString(@"To use Spotify you need to login with a Premium account!", @"NSError description for loading timeout")
+                        contentSource:[SMKSpotifyContentSource sharedInstance]];
 }

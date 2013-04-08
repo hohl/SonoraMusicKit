@@ -25,10 +25,9 @@
  @param credentials the credentials used to store 
  @discussion This method is asynchronous and will return immediately.
  */
-- (void)authenticateWithCredentials:(NSDictionary *)credentials
-                  completionHandler:(void(^)(NSError *error))handler;
+- (void)authenticateWithCredentials:(NSDictionary *)credentials;
 
-#if TARGET_OS_PHONE
+#ifdef TARGET_OS_IPHONE
 /**
  UIViewController which handles the login procces.
  @discussion After the user logged in via the view controller the delegate method didAuthenticateWithCredentials: will

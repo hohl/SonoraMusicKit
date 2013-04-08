@@ -6,6 +6,9 @@
 //  Copyright (c) 2012 Indragie Karunaratne. All rights reserved.
 //
 
+extern NSString *const SMKDefaultErrorDomain;
+extern NSString *const SMKErrorUserInfoKeyContentSource; // <- key used in NSError userInfo for content source
+
 extern NSInteger const SMKPlayerErrorFailedToCreateInputSource;
 extern NSInteger const SMKPlayerErrorFailedToCreateDecoder;
 extern NSInteger const SMKPlayerErrorFailedToEnqueueTrack;

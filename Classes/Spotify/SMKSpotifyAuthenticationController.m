@@ -23,24 +23,19 @@
 @synthesize delegate = _delegate;
 @synthesize contentSource = _contentSource;
 
-- (void)authenticateWithCredentials:(NSDictionary *)credentials completionHandler:(void (^)(NSError *))handler
+- (void)authenticateWithCredentials:(NSDictionary *)credentials
 {
     NSString *userName = [credentials objectForKey:@"UserName"];
     NSString *credential = [credentials objectForKey:@"Credential"];
-    
-    if (!(userName && credential)) {
-        return handler([NSError SMK_errorWithCode:SMKContentSourceErrorLoginRequired
-                                      description:NSLocalizedString(@"A 'User' and 'Credential' are required for authentication!", nil)]);
-    }
     
     _credentials = credentials;
     [_contentSource attemptLoginWithUserName:userName existingCredential:credential];
 }
 
-#if TARGET_OS_PHONE || TARGET_IPHONE_SIMULATOR
+#ifdef TARGET_OS_IPHONE
 - (UIViewController *)authenticationViewController
 {
-    SPLoginViewController *loginViewController = [SPLoginViewController loginControllerForSession:_session];
+    SPLoginViewController *loginViewController = [SPLoginViewController loginControllerForSession:_contentSource];
     return loginViewController;
 }
 #endif
@@ -64,14 +59,10 @@
 
 - (void)session:(SPSession *)aSession didGenerateLoginCredentials:(NSString *)credential forUserName:(NSString *)userName
 {
-    NSMutableDictionary *credentials;
+    NSMutableDictionary *credentials = [NSMutableDictionary dictionaryWithCapacity:2];
     [credentials setObject:userName forKey:@"UserName"];
     [credentials setObject:credential forKey:@"Credential"];
     _credentials = credentials;
-}
-
-- (void)sessionDidLoginSuccessfully:(SPSession *)aSession
-{
     if ([self.delegate respondsToSelector:@selector(authenticationController:didAuthenticateWithCredentials:)]) {
         [self.delegate authenticationController:self didAuthenticateWithCredentials:_credentials];
     }
@@ -93,6 +84,7 @@
 
 - (void)sessionDidLogOut:(SPSession *)aSession
 {
+    _credentials = nil;
     if ([self.delegate respondsToSelector:@selector(authenticationControllerDidLogout:)]) {
         [self.delegate authenticationControllerDidLogout:self];
     }

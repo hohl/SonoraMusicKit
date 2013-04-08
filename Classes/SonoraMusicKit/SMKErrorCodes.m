@@ -8,6 +8,9 @@
 
 #import "SMKErrorCodes.h"
 
+NSString *const SMKDefaultErrorDomain                       = @"com.indragie.SNRMusicKit";
+NSString *const SMKErrorUserInfoKeyContentSource            = @"UserInfo";
+
 NSInteger const SMKPlayerErrorFailedToCreateInputSource     = 0;
 NSInteger const SMKPlayerErrorFailedToCreateDecoder         = 1;
 NSInteger const SMKPlayerErrorItemAlreadyExists             = 2;
