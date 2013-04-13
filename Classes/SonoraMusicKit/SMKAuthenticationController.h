@@ -20,20 +20,21 @@
 /** @return YES if the user is authenticated. */
 - (BOOL)isAuthenticated;
 
-/**
- This method will authenticate the user with the passed credentials.
- @param credentials the credentials used to store 
- @discussion This method is asynchronous and will return immediately.
- */
-- (void)authenticateWithCredentials:(NSDictionary *)credentials;
-
 #ifdef TARGET_OS_IPHONE
 /**
- UIViewController which handles the login procces.
- @discussion After the user logged in via the view controller the delegate method didAuthenticateWithCredentials: will
- get called. You may want to use the delegate method to store the credentials to re-authenticate on next launch.
+ Attempts to reauthorize using an access token from a previous session.
+ If this process fails the user is presented with a modal login dialog.
+ @param credentials which store the username and password or similar information used to login
+ @param currentController controller from which a login view might be launched
+ @discussion This method is asynchronous and will return immediately.
  */
-- (UIViewController *)authenticationViewController;
+- (void)authorizeUsingCredentials:(NSDictionary *)credentials fromController:(UIViewController *)currentController;
+
+/**
+ Presents a modal login dialog and attempts to get authorized.
+ @param currentController controller from which the login view should be launched
+ */
+- (void)authorizeFromController:(UIViewController *)currentController;
 #endif
 @end
 

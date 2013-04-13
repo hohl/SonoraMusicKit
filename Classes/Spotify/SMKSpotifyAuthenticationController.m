@@ -18,25 +18,31 @@
 @implementation SMKSpotifyAuthenticationController {
     __weak SPSession<SMKContentSource> *_contentSource;
     NSDictionary *_credentials;
+    UIViewController *_authorizeFromController;
 }
 
 @synthesize delegate = _delegate;
 @synthesize contentSource = _contentSource;
 
-- (void)authenticateWithCredentials:(NSDictionary *)credentials
+#ifdef TARGET_OS_IPHONE
+- (void)authorizeUsingCredentials:(NSDictionary *)credentials fromController:(UIViewController *)currentController
 {
+    _authorizeFromController = currentController;
     NSString *userName = [credentials objectForKey:@"UserName"];
     NSString *credential = [credentials objectForKey:@"Credential"];
-    
-    _credentials = credentials;
-    [_contentSource attemptLoginWithUserName:userName existingCredential:credential];
+    if ([userName length] > 0 && [credential length] > 0) {
+        _credentials = credentials;
+        [_contentSource attemptLoginWithUserName:userName existingCredential:credential];
+    } else {
+        [self authorizeFromController:currentController];
+    }
 }
 
-#ifdef TARGET_OS_IPHONE
-- (UIViewController *)authenticationViewController
+- (void)authorizeFromController:(UIViewController *)currentController
 {
+    _authorizeFromController = nil;
     SPLoginViewController *loginViewController = [SPLoginViewController loginControllerForSession:_contentSource];
-    return loginViewController;
+    [currentController presentModalViewController:loginViewController animated:YES];
 }
 #endif
 
@@ -70,7 +76,9 @@
 
 - (void)session:(SPSession *)aSession didFailToLoginWithError:(NSError *)error
 {
-    if ([self.delegate respondsToSelector:@selector(authenticationController:didFailToLoginWithError:)]) {
+    if (_authorizeFromController) {
+        [self authorizeFromController:_authorizeFromController];
+    } else if ([self.delegate respondsToSelector:@selector(authenticationController:didFailToLoginWithError:)]) {
         [self.delegate authenticationController:self didFailToLoginWithError:error];
     }
 }
