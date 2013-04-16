@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
   s.subspec 'OtherServices' do |otherservices|
     otherservices.source_files = 'Classes/Other Services/*.{h,m}'
     otherservices.dependency     'AFNetworking', '~> 1.1'
-    otherservices.dependency     'SSKeychain'
+    otherservices.dependency     'SSKeychain', '~> 1.0'
   end
 end
