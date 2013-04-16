@@ -3,6 +3,7 @@
 //  SNRMusicKit
 //
 //  Created by Indragie Karunaratne on 2012-08-29.
+//  Updated by Michael Hohl on 2013-04-16.
 //  Copyright (c) 2012 Indragie Karunaratne. All rights reserved.
 //
 

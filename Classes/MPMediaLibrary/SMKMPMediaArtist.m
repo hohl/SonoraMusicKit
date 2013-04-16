@@ -51,7 +51,7 @@
 #pragma mark - SMKArtist
 
 - (void)fetchAlbumsWithSortDescriptors:(NSArray *)sortDescriptors
-                             predicate:(id)predicate
+                            predicates:(NSDictionary *)aPredicates
                      completionHandler:(void(^)(NSArray *albums, NSError *error))handler
 {
     __weak SMKMPMediaArtist *weakSelf = self;
@@ -62,8 +62,8 @@
         MPMediaPropertyPredicate *artistPredicate = [SMKMPMediaHelpers predicateForArtistNameOfItem:item];
         if (artistPredicate) {
             NSMutableSet *predicates = [NSMutableSet setWithObject:artistPredicate];
-            if (predicate)
-                [predicates addObjectsFromArray:[[(SMKMPMediaPredicate *)predicate predicates] allObjects]];
+            if (aPredicates)
+                [predicates addObjectsFromArray:[[SMKMPMediaHelpers predicatesFromDictionary:aPredicates] allObjects]];
             albumsQuery.filterPredicates = predicates;
             NSArray *collections = albumsQuery.collections;
             NSMutableArray *albums = [NSMutableArray arrayWithCapacity:[collections count]];
@@ -85,7 +85,7 @@
 }
 
 - (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors
-                             predicate:(id)predicate
+                            predicates:(NSDictionary *)aPredicates
                      completionHandler:(void(^)(NSArray *tracks, NSError *error))handler
 {
     __weak SMKMPMediaArtist *weakSelf = self;
@@ -93,14 +93,14 @@
         SMKMPMediaArtist *strongSelf = weakSelf;
         NSMutableArray *tracks = [NSMutableArray array];
         NSArray *items = nil;
-        if (!predicate) {
+        if (!aPredicates) {
             items = strongSelf.representedObject.items;
         } else {
             MPMediaQuery *songsQuery = [MPMediaQuery songsQuery];
             MPMediaPropertyPredicate *artistPredicate = [MPMediaPropertyPredicate predicateWithValue:[strongSelf.representedObject valueForProperty:MPMediaItemPropertyPersistentID] forProperty:MPMediaItemPropertyArtistPersistentID];
             NSMutableSet *predicates = [NSMutableSet setWithObject:artistPredicate];
-            if (predicate)
-                [predicates addObjectsFromArray:[[(SMKMPMediaPredicate *)predicate predicates] allObjects]];
+            if (aPredicates)
+                [predicates addObjectsFromArray:[[SMKMPMediaHelpers predicatesFromDictionary:aPredicates] allObjects]];
             items = songsQuery.items;
         }
         [items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

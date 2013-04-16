@@ -17,4 +17,12 @@
  @return Predicate for matching the artist name
  */
 + (MPMediaPropertyPredicate *)predicateForArtistNameOfItem:(MPMediaItem *)item;
+
+/**
+ A set of MPMediaPropertyPredicates which represents the same filters as the Sonora Music Kit represetation.
+ @param smkPredicates A dictionary which it is used to filter in the whole Sonora Music Kit library.
+ @return A set of MPMediaPropertyPredicates usable with MPMediaQuery.
+ @discussion This method is only designed for private usage in this library!
+ */
++ (NSSet *)predicatesFromDictionary:(NSDictionary *)smkPredicates;
 @end

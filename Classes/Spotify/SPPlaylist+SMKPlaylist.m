@@ -30,7 +30,7 @@
     dispatch_queue_t queue = [SMKSpotifyContentSource spotifyLocalQueue];
     [SMKSpotifyHelpers loadItemsAynchronously:self.items
                               sortDescriptors:nil
-                                    predicate:nil
+                                   predicates:nil
                                  sortingQueue:queue
                             completionHandler:handler];
 }

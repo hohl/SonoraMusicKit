@@ -123,7 +123,7 @@
 }
 
 - (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors
-                             predicate:(id)predicate
+                             predicates:(NSDictionary *)aPredicates
                      completionHandler:(void(^)(NSArray *tracks, NSError *error))handler
 {
     __weak SMKMPMediaAlbum *weakSelf = self;
@@ -131,14 +131,14 @@
         SMKMPMediaAlbum *strongSelf = weakSelf;
         NSMutableArray *tracks = [NSMutableArray array];
         NSArray *items = nil;
-        if (!predicate) {
+        if (!aPredicates) {
             items = strongSelf.representedObject.items;
         } else {
             MPMediaQuery *songsQuery = [MPMediaQuery songsQuery];
             MPMediaPropertyPredicate *albumPredicate = [MPMediaPropertyPredicate predicateWithValue:[strongSelf.representedObject valueForProperty:MPMediaItemPropertyPersistentID] forProperty:MPMediaItemPropertyAlbumPersistentID];
             NSMutableSet *predicates = [NSMutableSet setWithObject:albumPredicate];
-            if (predicate)
-                [predicates addObjectsFromArray:[[(SMKMPMediaPredicate *)predicate predicates] allObjects]];
+            if (aPredicates)
+                [predicates addObjectsFromArray:[[SMKMPMediaHelpers predicatesFromDictionary:aPredicates] allObjects]];
             items = songsQuery.items;
         }
         [items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

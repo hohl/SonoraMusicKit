@@ -12,7 +12,7 @@
 + (void)loadItems:(NSArray *)items group:(dispatch_group_t)group array:(NSMutableArray *)array;
 + (void)loadItemsAynchronously:(NSArray *)items
                           sortDescriptors:(NSArray *)sortDescriptors
-                                predicate:(NSPredicate *)predicate
+                                predicates:(NSDictionary *)predicates
                              sortingQueue:(dispatch_queue_t)queue
                         completionHandler:(void(^)(NSArray *objects, NSError *error))handler;
 @end

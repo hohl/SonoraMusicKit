@@ -8,6 +8,7 @@
 
 #import "SMKMPMediaContentSource.h"
 #import "SMKSection.h"
+#import "SMKMPMediaHelpers.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface SMKMPMediaPlaylist (SMKInternal)
@@ -65,15 +66,17 @@
     dispatch_release(_queryQueue);
 }
 
+- (NSString *)displayName { return @"iTunes"; }
+
 - (void)fetchPlaylistsWithSortDescriptors:(NSArray *)sortDescriptors
-                                predicate:(SMKMPMediaPredicate *)predicate
+                               predicates:(NSDictionary *)predicates
                         completionHandler:(void(^)(NSArray *playlists, NSError *error))handler
 {
     __weak SMKMPMediaContentSource *weakSelf = self;
     dispatch_async(_queryQueue, ^{
         SMKMPMediaContentSource *strongSelf = weakSelf;
         MPMediaQuery *playlistsQuery = [MPMediaQuery playlistsQuery];
-        if (predicate) playlistsQuery.filterPredicates = predicate.predicates;
+        if (predicates) playlistsQuery.filterPredicates = [SMKMPMediaHelpers predicatesFromDictionary:predicates];
         NSArray *collections = playlistsQuery.collections;
         NSMutableArray *playlists = [NSMutableArray arrayWithCapacity:[collections count]];
         [collections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -88,12 +91,9 @@
     });
 }
 
-- (NSString *)displayName { return @"iTunes"; }
-
-+ (Class)predicateClass { return [SMKMPMediaPredicate class]; }
 
 - (void)fetchArtistsWithSortDescriptors:(NSArray *)sortDescriptors
-                              predicate:(SMKMPMediaPredicate *)predicate
+                             predicates:(NSDictionary *)predicates
                       completionHandler:(void(^)(NSArray *artists, NSArray *sections, NSError *error))handler
 {
     __weak SMKMPMediaContentSource *weakSelf = self;
@@ -101,7 +101,7 @@
         SMKMPMediaContentSource *strongSelf = weakSelf;
         MPMediaQuery *artistsQuery = [MPMediaQuery artistsQuery];
         artistsQuery.groupingType = MPMediaGroupingAlbumArtist;
-        if (predicate) artistsQuery.filterPredicates = predicate.predicates;
+        if (predicates) artistsQuery.filterPredicates = [SMKMPMediaHelpers predicatesFromDictionary:predicates];
         NSArray *collections = artistsQuery.collections;
         NSMutableArray *artists = [NSMutableArray arrayWithCapacity:[collections count]];
         [collections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -129,14 +129,14 @@
 }
 
 - (void)fetchAlbumsWithSortDescriptors:(NSArray *)sortDescriptors
-                             predicate:(SMKMPMediaPredicate *)predicate
+                            predicates:(NSDictionary *)predicates
                      completionHandler:(void(^)(NSArray *albums, NSArray *sections, NSError *error))handler
 {
     __weak SMKMPMediaContentSource *weakSelf = self;
     dispatch_async(self.queryQueue, ^{
         SMKMPMediaContentSource *strongSelf = weakSelf;
         MPMediaQuery *albumsQuery = [MPMediaQuery albumsQuery];
-        if (predicate) albumsQuery.filterPredicates = predicate.predicates;
+        if (predicates) albumsQuery.filterPredicates = [SMKMPMediaHelpers predicatesFromDictionary:predicates];
         NSArray *collections = albumsQuery.collections;
         NSMutableArray *albums = [NSMutableArray arrayWithCapacity:[collections count]];
         [collections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -163,14 +163,14 @@
 }
 
 - (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors
-                             predicate:(SMKMPMediaPredicate *)predicate
+                            predicates:(NSDictionary *)predicates
                      completionHandler:(void(^)(NSArray *tracks, NSArray *sections, NSError *error))handler
 {
     __weak SMKMPMediaContentSource *weakSelf = self;
     dispatch_async(self.queryQueue, ^{
         SMKMPMediaContentSource *strongSelf = weakSelf;
         MPMediaQuery *songsQuery = [MPMediaQuery songsQuery];
-        if (predicate) songsQuery.filterPredicates = predicate.predicates;
+        if (predicates) songsQuery.filterPredicates = [SMKMPMediaHelpers predicatesFromDictionary:predicates];
         NSArray *collections = songsQuery.items;
         NSMutableArray *tracks = [NSMutableArray arrayWithCapacity:[collections count]];
         [collections enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

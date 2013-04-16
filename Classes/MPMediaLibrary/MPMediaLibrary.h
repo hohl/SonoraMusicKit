@@ -11,7 +11,5 @@
 #import "SMKMPMediaAlbum.h"
 #import "SMKMPMediaArtist.h"
 #import "SMKMPMediaContentSource.h"
-#import "SMKMPMediaHelpers.h"
 #import "SMKMPMediaPlaylist.h"
-#import "SMKMPMediaPredicate.h"
 #import "SMKMPMediaTrack.h"

@@ -9,7 +9,6 @@
 #import "SMKSpotifyContentSource.h"
 #import "SMKSpotifyHelpers.h"
 #import "SMKSpotifyPlayer.h"
-#import "SMKSpotifyPredicate.h"
 #import "SPAlbum+SMKAlbum.h"
 #import "SPArtist+SMKArtist.h"
 #import "SPPlaylist+SMKPlaylist.h"

@@ -20,22 +20,37 @@ static void* const SMKSPArtistBrowseKey = @"SMK_SPArtistBrowse";
 #pragma mark - SMKArtist
 
 - (void)fetchAlbumsWithSortDescriptors:(NSArray *)sortDescriptors
-                             predicate:(NSPredicate *)predicate
+                            predicates:(NSDictionary *)predicates
                      completionHandler:(void(^)(NSArray *albums, NSError *error))handler
 {
     SPArtistBrowse *browse = [self SMK_associatedArtistBrowse];
     dispatch_queue_t queue = [SMKSpotifyContentSource spotifyLocalQueue];
     [SMKSpotifyHelpers loadItemsAynchronously:@[browse]
-                              sortDescriptors:sortDescriptors
-                                    predicate:predicate
+                              sortDescriptors:nil
+                                   predicates:nil
                                  sortingQueue:queue
-                            completionHandler:^(NSArray *albums, NSError *error) {
+                            completionHandler:^(NSArray *tracks, NSError *error) {
                                 if (error) {
                                     handler(nil, error);
                                 } else {
-                                    handler(browse.albums, nil);
+                                    NSMutableArray *albums = [NSMutableArray arrayWithArray:browse.albums];
+                                    [albums SMK_processWithSortDescriptors:sortDescriptors predicates:predicates];
+                                    handler(albums, nil);
                                 }
                             }];
+}
+
+- (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors
+                            predicates:(NSDictionary *)predicates
+                     completionHandler:(void (^)(NSArray *, NSError *))handler
+{
+    SPArtistBrowse *browse = [self SMK_associatedArtistBrowse];
+    dispatch_queue_t queue = [SMKSpotifyContentSource spotifyLocalQueue];
+    [SMKSpotifyHelpers loadItemsAynchronously:@[browse]
+                              sortDescriptors:sortDescriptors
+                                   predicates:predicates
+                                 sortingQueue:queue
+                            completionHandler:handler];
 }
 
 #pragma mark - SMKContentObject

@@ -3,6 +3,7 @@
 //  SNRMusicKit
 //
 //  Created by Indragie Karunaratne on 2012-08-21.
+//  Updated by Michael Hohl on 2013-04-16.
 //  Copyright (c) 2012 Indragie Karunaratne. All rights reserved.
 //
 
@@ -22,12 +23,12 @@
 /**
  This method will fetch the tracks asynchronously and call the completion handler when finished.
  @param sortDescriptors Array of NSSortDescriptor objects used to sort the content
- @param predicate A predicate to filter the results with. Use SMKContentSource +predicateClass to find out which 
+ @param predicates A dictionary of predicates to filter the results with. Use SMKContentSource +predicateClass to find out which 
  class the content source expects its predicate to use.
  @discussion This method is asynchronous and will return immediately.
  */
 - (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors
-                             predicate:(id)predicate
+                             predicates:(NSDictionary *)predicates
                      completionHandler:(void(^)(NSArray *tracks, NSError *error))handler;
 
 @optional

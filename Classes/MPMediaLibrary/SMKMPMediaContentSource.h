@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "SMKContentSource.h"
-#import "SMKMPMediaPredicate.h"
 #import "SMKMPMediaPlaylist.h"
 #import "SMKMPMediaTrack.h"
 #import "SMKMPMediaAlbum.h"

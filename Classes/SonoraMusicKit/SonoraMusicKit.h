@@ -16,6 +16,7 @@
 #import "SMKPlatformImports.h"
 #import "SMKPlayer.h"
 #import "SMKPlaylist.h"
+#import "SMKPredicates.h"
 #import "SMKQueueController.h"
 #import "SMKSection.h"
 #import "SMKTrack.h"

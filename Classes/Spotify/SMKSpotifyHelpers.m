@@ -26,16 +26,16 @@
 }
 
 + (void)loadItemsAynchronously:(NSArray *)items
-                          sortDescriptors:(NSArray *)sortDescriptors
-                                predicate:(NSPredicate *)predicate
-                             sortingQueue:(dispatch_queue_t)queue
-                        completionHandler:(void(^)(NSArray *objects, NSError *error))handler
+               sortDescriptors:(NSArray *)sortDescriptors
+                    predicates:(NSDictionary *)predicates
+                  sortingQueue:(dispatch_queue_t)queue
+             completionHandler:(void(^)(NSArray *objects, NSError *error))handler
 {
     NSMutableArray *hierarchy = [NSMutableArray array];
     dispatch_group_t group = dispatch_group_create();
     [self loadItems:items group:group array:hierarchy];
     dispatch_group_notify(group, queue, ^{
-        [hierarchy SMK_processWithSortDescriptors:sortDescriptors predicate:predicate];
+        [hierarchy SMK_processWithSortDescriptors:sortDescriptors predicates:predicates];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (handler) handler(hierarchy, nil);
         });

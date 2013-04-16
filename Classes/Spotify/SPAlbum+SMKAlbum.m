@@ -21,14 +21,14 @@ static void* const SMKSPAlbumBrowseKey = @"SMK_SPAlbumBrowse";
 #pragma mark - SMKAlbum
 
 - (void)fetchTracksWithSortDescriptors:(NSArray *)sortDescriptors
-                             predicate:(NSPredicate *)predicate
+                            predicates:(NSDictionary *)predicates
                      completionHandler:(void(^)(NSArray *tracks, NSError *error))handler
 {
     SPAlbumBrowse *browse = [self SMK_associatedAlbumBrowse];
     dispatch_queue_t queue = [SMKSpotifyContentSource spotifyLocalQueue];
     [SMKSpotifyHelpers loadItemsAynchronously:@[browse]
                               sortDescriptors:sortDescriptors
-                                    predicate:predicate
+                                   predicates:predicates
                                  sortingQueue:queue
                             completionHandler:handler];
 }
