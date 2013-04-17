@@ -29,11 +29,11 @@
         if ([key isEqual:SMKPredicateKeyUniqueIdentifier]) {
             [mpPredicates addObject:[MPMediaPropertyPredicate predicateWithValue:value forProperty:MPMediaItemPropertyPersistentID]];
         } else if ([key isEqual:SMKPredicateKeyTitle]) {
-            [mpPredicates addObject:[MPMediaPropertyPredicate predicateWithValue:value forProperty:MPMediaItemPropertyTitle]];
+            [mpPredicates addObject:[MPMediaPropertyPredicate predicateWithValue:value forProperty:MPMediaItemPropertyTitle comparisonType:MPMediaPredicateComparisonContains]];
         } else if ([key isEqual:SMKPredicateKeyArtistName]) {
-            [mpPredicates addObject:[MPMediaPropertyPredicate predicateWithValue:value forProperty:MPMediaItemPropertyArtist]];
+            [mpPredicates addObject:[MPMediaPropertyPredicate predicateWithValue:value forProperty:MPMediaItemPropertyArtist comparisonType:MPMediaPredicateComparisonContains]];
         } else if ([key isEqual:SMKPredicateKeyAlbumTitle]) {
-            [mpPredicates addObject:[MPMediaPropertyPredicate predicateWithValue:value forProperty:MPMediaItemPropertyAlbumTitle]];
+            [mpPredicates addObject:[MPMediaPropertyPredicate predicateWithValue:value forProperty:MPMediaItemPropertyAlbumTitle comparisonType:MPMediaPredicateComparisonContains]];
         } else {
             [mpPredicates addObject:[MPMediaPropertyPredicate predicateWithValue:value forProperty:key]];
         }
